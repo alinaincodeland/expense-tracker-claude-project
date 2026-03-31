@@ -15,8 +15,10 @@ No test suite is configured.
 
 ## Architecture
 
-This is a single-component React app (Vite + React 19). All logic lives in `src/App.jsx`:
+React 19 + Vite app with no routing, no backend, and no persistence — state resets on page reload.
 
-- **State**: `transactions` array (seeded with hardcoded data), plus form fields (`description`, `amount`, `type`, `category`) and filter fields (`filterType`, `filterCategory`).
-- **Known bug**: `amount` is stored as a string in state. The `totalIncome`/`totalExpenses` reducers use `+` on string values, causing string concatenation instead of numeric addition.
-- **No routing, no backend, no persistence** — state resets on page reload.
+**Component tree:**
+- `App` — holds the `transactions` array in state (seeded with hardcoded data); passes it down and handles `onAdd`
+  - `Summary` — receives `transactions`, computes `totalIncome`, `totalExpenses`, and `balance` internally
+  - `TransactionForm` — owns its own form state (`description`, `amount`, `type`, `category`); calls `onAdd` prop with the new transaction object
+  - `TransactionList` — receives `transactions`, owns filter state (`filterType`, `filterCategory`) internally
